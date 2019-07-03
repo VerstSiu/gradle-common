@@ -3,11 +3,7 @@
 
 ## Java
 
-* jar-module-export
-
-    ```
-    https://raw.githubusercontent.com/VerstSiu/master/java/jar-module-export.gradle
-    ```
+* [jar-module-export](docs/jar-module-export.md)
 
 ## License
 
