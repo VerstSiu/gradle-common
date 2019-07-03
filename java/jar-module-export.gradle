@@ -1,0 +1,41 @@
+
+task clearBuildJarFiles(type: Delete) {
+    delete fileTree("$buildDir/libs") {
+        include '*.jar'
+    }
+}
+
+task clearExportedJarFiles(type: Delete) {
+    delete fileTree("$projectDir/../export") {
+        include '**/*.jar', '**/*.zip'
+    }
+}
+
+task copyExportedJarFiles(type: Copy) {
+    from "$buildDir/libs"
+    include '*.jar'
+    into "$projectDir/../export"
+}
+
+task markExportedJarFilesAsGitAdded(type: Exec) {
+    executable 'git'
+    args = [ "add", "$projectDir/../export/*.jar" ]
+}
+
+task packageSources(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+    baseName = "$project.group-$project.name"
+}
+
+jar {
+    baseName = "$project.group-$project.name"
+}
+
+task release {
+    dependsOn clearBuildJarFiles, jar, packageSources
+}
+
+task releaseExport {
+    dependsOn release, clearExportedJarFiles, copyExportedJarFiles, markExportedJarFilesAsGitAdded
+}
