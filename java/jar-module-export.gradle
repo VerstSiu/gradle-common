@@ -5,18 +5,6 @@ task clearBuildJarFiles(type: Delete) {
     }
 }
 
-task clearExportedJarFiles(type: Delete) {
-    delete fileTree("$projectDir/../export") {
-        include '**/*.jar', '**/*.zip'
-    }
-}
-
-task copyExportedJarFiles(type: Copy) {
-    from "$buildDir/libs"
-    include '*.jar'
-    into "$projectDir/../export"
-}
-
 task packageSources(type: Jar, dependsOn: 'classes') {
     from sourceSets.main.allSource
     classifier = 'sources'
@@ -29,8 +17,4 @@ jar {
 
 task release {
     dependsOn clearBuildJarFiles, jar, packageSources
-}
-
-task releaseExport {
-    dependsOn release, clearExportedJarFiles, copyExportedJarFiles
 }
