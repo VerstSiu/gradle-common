@@ -17,11 +17,6 @@ task copyExportedJarFiles(type: Copy) {
     into "$projectDir/../export"
 }
 
-task markExportedJarFilesAsGitAdded(type: Exec) {
-    executable 'git'
-    args = [ "add", "$projectDir/../export/*.jar" ]
-}
-
 task packageSources(type: Jar, dependsOn: 'classes') {
     from sourceSets.main.allSource
     classifier = 'sources'
@@ -37,5 +32,5 @@ task release {
 }
 
 task releaseExport {
-    dependsOn release, clearExportedJarFiles, copyExportedJarFiles, markExportedJarFilesAsGitAdded
+    dependsOn release, clearExportedJarFiles, copyExportedJarFiles
 }
